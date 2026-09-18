@@ -32,12 +32,11 @@ export default function Home() {
           </h1>
         </div>
 
-        <Link
-          to="/menu"
+        <div
           className="hero-photo"
           style={{
             width: 'min(220px, 100%)', flex: '0 1 220px', background: 'var(--off-white)',
-            padding: 'clamp(6px, 1vw, 10px)', boxShadow: '0 14px 28px rgba(0,0,0,0.22)', textDecoration: 'none',
+            padding: 'clamp(6px, 1vw, 10px)', boxShadow: '0 14px 28px rgba(0,0,0,0.22)',
             margin: '0 auto',
           }}
         >
@@ -49,7 +48,7 @@ export default function Home() {
               border: '1px solid var(--olive)', display: 'block',
             }}
           />
-        </Link>
+        </div>
       </section>
 
       <section style={{ padding: 'clamp(36px, 6vh, 64px) clamp(20px, 6vw, 90px)', textAlign: 'center' }}>
