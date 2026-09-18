@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import { MenuProvider } from './context/MenuContext.jsx';
 import { LangProvider, useLang, categoryNames } from './context/LangContext.jsx';
-import symbol from './assets/symbol.png';
+import symbol from './assets/symbol-black.png';
 import CategoryPage from './CategoryPage.jsx';
 import MenusPage from './MenusPage.jsx';
 import Home from './Home.jsx';
