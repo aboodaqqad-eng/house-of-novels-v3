@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useMenu } from './context/MenuContext.jsx';
 import { menuPhotos } from './data/menuPhotos.js';
+import storefrontPhoto from './assets/photos/storefront.jpg';
 
 const CHAPTER_SLUGS = ['desserts', 'coffee', 'bakery', 'signature-cakes'];
 
@@ -19,14 +20,14 @@ export default function Home() {
     <div style={{ background: 'var(--off-white)' }}>
       <section style={{
         background: 'var(--olive)', color: 'var(--off-white)',
-        padding: 'clamp(40px, 8vh, 80px) clamp(20px, 6vw, 90px)',
-        display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 'clamp(48px, 10vw, 140px)', flexWrap: 'wrap',
+        padding: 'clamp(24px, 4vh, 44px) clamp(20px, 6vw, 90px)',
+        display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 'clamp(32px, 6vw, 80px)', flexWrap: 'wrap',
       }}>
-        <div className="hero-text" style={{ maxWidth: 640, flex: '1 1 320px' }}>
-          <p className="label" style={{ fontSize: '0.75rem', letterSpacing: '0.15em', opacity: 0.85, marginBottom: 16 }}>
+        <div className="hero-text" style={{ maxWidth: 560, flex: '1 1 320px' }}>
+          <p className="label" style={{ fontSize: '0.7rem', letterSpacing: '0.15em', opacity: 0.85, marginBottom: 10 }}>
             Maison de Pâtisserie — Riyadh, Est. 2018
           </p>
-          <h1 className="serif" style={{ fontSize: 'clamp(2.2rem, 5.5vw, 3.6rem)', lineHeight: 1.1, textTransform: 'uppercase' }}>
+          <h1 className="serif" style={{ fontSize: 'clamp(1.6rem, 3.4vw, 2.4rem)', lineHeight: 1.15, textTransform: 'uppercase' }}>
             The House of <em style={{ fontStyle: 'italic', textTransform: 'none' }}>extraordinary</em> Taste
           </h1>
         </div>
@@ -35,19 +36,19 @@ export default function Home() {
           to="/menu"
           className="hero-photo"
           style={{
-            width: 'min(440px, 100%)', flex: '1 1 260px', background: 'var(--off-white)',
-            padding: 'clamp(10px, 1.6vw, 16px)', boxShadow: '0 24px 48px rgba(0,0,0,0.28)', textDecoration: 'none',
+            width: 'min(220px, 100%)', flex: '0 1 220px', background: 'var(--off-white)',
+            padding: 'clamp(6px, 1vw, 10px)', boxShadow: '0 14px 28px rgba(0,0,0,0.22)', textDecoration: 'none',
+            margin: '0 auto',
           }}
         >
-          <div style={{
-            border: '1px solid var(--olive)', padding: 'clamp(5px, 0.8vw, 8px)',
-            aspectRatio: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--peach)',
-          }}>
-            <span className="label" style={{ fontSize: '0.85rem', letterSpacing: '0.12em', color: 'var(--navy-deep)', textAlign: 'center', padding: '0 20px' }}>
-              Explore Our Menu
-            </span>
-          </div>
+          <img
+            src={storefrontPhoto}
+            alt="House of Novéls storefront"
+            style={{
+              width: '100%', aspectRatio: '4 / 5', objectFit: 'cover', objectPosition: 'center',
+              border: '1px solid var(--olive)', display: 'block',
+            }}
+          />
         </Link>
       </section>
 

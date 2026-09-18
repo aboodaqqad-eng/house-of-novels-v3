@@ -12,19 +12,20 @@ function Nav() {
   const { lang } = useLang();
 
   const navLinkStyle = ({ isActive }) => ({
-    fontSize: '0.78rem', color: 'var(--off-white)', opacity: isActive ? 1 : 0.85, textDecoration: 'none',
-    border: isActive ? '1px solid var(--off-white)' : '1px solid transparent', borderRadius: 3,
+    fontSize: '0.78rem', color: 'var(--navy-deep)', opacity: isActive ? 1 : 0.75, textDecoration: 'none',
+    border: isActive ? '1px solid var(--navy-deep)' : '1px solid transparent', borderRadius: 3,
     padding: '6px 12px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', letterSpacing: '0.1em',
   });
 
   return (
     <header className="site-header" style={{
-      background: 'var(--olive)', color: 'var(--off-white)', padding: '14px 32px',
+      background: 'var(--off-white)', color: 'var(--navy-deep)', padding: '14px 32px',
       display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20,
+      borderBottom: '1px solid rgba(24,38,67,0.1)',
     }}>
       <NavLink to="/" className="site-logo" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', justifySelf: 'start' }}>
-        <img src={symbol} alt="" style={{ height: 34, filter: 'brightness(0) invert(1)', flex: '0 0 auto' }} />
-        <span className="serif" style={{ fontSize: '1.15rem', color: 'var(--off-white)', whiteSpace: 'nowrap' }}>
+        <img src={symbol} alt="" style={{ height: 34, flex: '0 0 auto' }} />
+        <span className="serif" style={{ fontSize: '1.15rem', color: 'var(--navy-deep)', whiteSpace: 'nowrap' }}>
           House of Novéls
         </span>
       </NavLink>
@@ -37,7 +38,7 @@ function Nav() {
         </NavLink>
       </nav>
       <div className="site-header-right" style={{ display: 'flex', alignItems: 'center', gap: 20, justifySelf: 'end' }}>
-        <span className="site-header-locale label" style={{ fontSize: '0.72rem', letterSpacing: '0.15em', opacity: 0.85 }}>Riyadh</span>
+        <span className="site-header-locale label" style={{ fontSize: '0.72rem', letterSpacing: '0.15em', opacity: 0.65, color: 'var(--navy-deep)' }}>Riyadh</span>
       </div>
     </header>
   );
