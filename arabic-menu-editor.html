@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>House of Novéls — Arabic Menu Editor</title>
+<style>
+  :root {
+    --olive: #6C7F67;
+    --navy-rich: #142784;
+    --off-white: #EFE8DF;
+    --orange: #FF7F32;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--off-white);
+    color: var(--navy-rich);
+    font-family: Arial, sans-serif;
+    padding: 32px 24px 120px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+  .sub {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-bottom: 28px;
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .category {
+    margin-bottom: 40px;
+  }
+  .category h2 {
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--olive);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+  .item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .item .en {
+    padding-right: 12px;
+  }
+  .item .en .name {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .item .en .desc {
+    font-size: 0.82rem;
+    font-style: italic;
+    opacity: 0.65;
+    margin-top: 4px;
+  }
+  .item .en .price {
+    font-size: 0.78rem;
+    opacity: 0.5;
+    margin-top: 6px;
+  }
+  .ar label {
+    display: block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+  .ar input, .ar textarea {
+    width: 100%;
+    direction: rtl;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 0.95rem;
+    padding: 8px 10px;
+    border: 1px solid rgba(20,39,132,0.2);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background: var(--off-white);
+    color: var(--navy-rich);
+  }
+  .ar textarea {
+    resize: vertical;
+    min-height: 40px;
+  }
+  .placeholder-note {
+    font-size: 0.78rem;
+    opacity: 0.55;
+    font-style: italic;
+    padding: 10px 0;
+  }
+  .bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--navy-rich);
+    color: var(--off-white);
+    padding: 14px 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .bar button {
+    background: var(--olive);
+    color: var(--off-white);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .bar .status {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+  #output {
+    display: none;
+    width: 100%;
+    margin-top: 24px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  #output textarea {
+    width: 100%;
+    height: 320px;
+    font-family: monospace;
+    font-size: 0.78rem;
+    direction: ltr;
+    padding: 12px;
+    border: 1px solid rgba(20,39,132,0.2);
+    border-radius: 6px;
+  }
+  #output h3 {
+    margin-top: 0;
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Arabic Menu Editor</h1>
+<p class="sub">
+  Fill in the Arabic name (and description, optional) for each item below. Your typing is
+  autosaved in this browser as you go, so you can close and reopen this file safely.
+  When you're done, click "Generate result" at the bottom, copy the text box, and send it back.
+</p>
+
+<div id="categories"></div>
+
+<div class="bar">
+  <span class="status" id="status">Autosaved</span>
+  <div>
+    <button onclick="generateOutput()">Generate result</button>
+    <button onclick="clearAll()" style="background:#a33;">Clear all</button>
+  </div>
+</div>
+
+<div id="output">
+  <h3>Copy everything below and send it back:</h3>
+  <textarea id="outputText" readonly onclick="this.select()"></textarea>
+</div>
+
+<script>
+const DATA = [
+  {
+    slug: 'cake',
+    name: 'Cake',
+    items: [
+      { name: 'Brûlée Pineapple', price: 18, desc: 'Lime crema, passionfruit sauce, raspberry, mint, shortbread cookie crumble' },
+      { name: 'Chocolate Lava Cake', price: 19, desc: 'Spiced lava cake, whipped mascarpone, raspberry coulis, berries' },
+      { name: 'Pistachio & Rose Tart', price: 18, desc: 'Pistachio cream, rose mousse, fresh berries, almond crumble' },
+      { name: 'Vanilla Bean Pavlova', price: 17, desc: 'Vanilla cream, seasonal berries, passionfruit curd, meringue' },
+      { name: 'Pistachio & Raspberry', price: 24, desc: 'Pistachio sponge, raspberry compote, vanilla cream' },
+      { name: 'Dark Chocolate', price: 25, desc: 'Chocolate sponge, dark chocolate ganache, cocoa crumble' },
+      { name: 'Vanilla & Berries', price: 23, desc: 'Vanilla sponge, mascarpone cream, seasonal berries' },
+      { name: 'Lemon & Meringue', price: 22, desc: 'Lemon curd, vanilla cream, toasted Italian meringue' },
+    ],
+  },
+  {
+    slug: 'bakery',
+    name: 'Bakery',
+    items: [
+      { name: 'Butter Croissant', price: 12, desc: 'Classic French-style laminated pastry, cultured butter' },
+      { name: 'Almond Croissant', price: 15, desc: 'Almond cream, toasted almonds, powdered sugar' },
+      { name: 'Pain au Chocolat', price: 14, desc: 'Laminated pastry, dark chocolate' },
+      { name: 'Pistachio Danish', price: 16, desc: 'Pistachio cream, flaky pastry, roasted pistachios' },
+      { name: 'Cinnamon Roll', price: 14, desc: 'Spiced cinnamon filling, vanilla glaze' },
+    ],
+  },
+  {
+    slug: 'coffee',
+    name: 'Coffee',
+    items: [
+      { name: 'Espresso', price: 8, desc: 'Single origin, freshly ground' },
+      { name: 'Americano', price: 10, desc: 'Espresso, hot water' },
+      { name: 'Cappuccino', price: 12, desc: 'Espresso, steamed milk, delicate foam' },
+      { name: 'Caffè Latte', price: 13, desc: 'Espresso, silky steamed milk' },
+      { name: 'Flat White', price: 13, desc: 'Double espresso, velvety microfoam' },
+    ],
+  },
+  {
+    slug: 'healthy',
+    name: 'Healthy Cake and Bread',
+    placeholder: true,
+    items: [],
+  },
+  {
+    slug: 'catering',
+    name: 'Events Catering',
+    placeholder: true,
+    items: [],
+  },
+];
+
+const STORAGE_KEY = 'hon_arabic_menu_v1';
+
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function save(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    document.getElementById('status').textContent = 'Autosaved just now';
+  } catch (e) {
+    document.getElementById('status').textContent = 'Autosave unavailable in this browser';
+  }
+}
+
+const saved = loadSaved();
+
+function itemKey(slug, idx) {
+  return slug + '__' + idx;
+}
+
+function render() {
+  const root = document.getElementById('categories');
+  root.innerHTML = '';
+
+  DATA.forEach((cat) => {
+    const catEl = document.createElement('div');
+    catEl.className = 'category';
+
+    const h2 = document.createElement('h2');
+    h2.textContent = cat.name;
+    catEl.appendChild(h2);
+
+    if (cat.placeholder || cat.items.length === 0) {
+      const note = document.createElement('div');
+      note.className = 'placeholder-note';
+      note.textContent = 'No real items yet for this category — skip for now.';
+      catEl.appendChild(note);
+      root.appendChild(catEl);
+      return;
+    }
+
+    cat.items.forEach((item, idx) => {
+      const key = itemKey(cat.slug, idx);
+      const existing = saved[key] || {};
+
+      const row = document.createElement('div');
+      row.className = 'item';
+
+      const enCol = document.createElement('div');
+      enCol.className = 'en';
+      enCol.innerHTML =
+        '<div class="name">' + item.name + '</div>' +
+        '<div class="desc">' + item.desc + '</div>' +
+        '<div class="price">' + item.price + ' SAR</div>';
+
+      const arCol = document.createElement('div');
+      arCol.className = 'ar';
+
+      const nameLabel = document.createElement('label');
+      nameLabel.textContent = 'Arabic name';
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.placeholder = 'اسم الصنف';
+      nameInput.value = existing.nameAr || '';
+      nameInput.addEventListener('input', () => {
+        const s = loadSaved();
+        s[key] = s[key] || {};
+        s[key].nameAr = nameInput.value;
+        save(s);
+      });
+
+      const descLabel = document.createElement('label');
+      descLabel.textContent = 'Arabic description (optional)';
+      const descInput = document.createElement('textarea');
+      descInput.placeholder = 'الوصف بالعربية (اختياري)';
+      descInput.value = existing.descAr || '';
+      descInput.addEventListener('input', () => {
+        const s = loadSaved();
+        s[key] = s[key] || {};
+        s[key].descAr = descInput.value;
+        save(s);
+      });
+
+      arCol.appendChild(nameLabel);
+      arCol.appendChild(nameInput);
+      arCol.appendChild(descLabel);
+      arCol.appendChild(descInput);
+
+      row.appendChild(enCol);
+      row.appendChild(arCol);
+      catEl.appendChild(row);
+    });
+
+    root.appendChild(catEl);
+  });
+}
+
+function generateOutput() {
+  const s = loadSaved();
+  let lines = [];
+  DATA.forEach((cat) => {
+    if (cat.placeholder || cat.items.length === 0) return;
+    lines.push('## ' + cat.name);
+    cat.items.forEach((item, idx) => {
+      const key = itemKey(cat.slug, idx);
+      const entry = s[key] || {};
+      lines.push(item.name + ' -> nameAr: "' + (entry.nameAr || '') + '"' + (entry.descAr ? ' | descAr: "' + entry.descAr + '"' : ''));
+    });
+    lines.push('');
+  });
+  const out = document.getElementById('output');
+  const textarea = document.getElementById('outputText');
+  textarea.value = lines.join('\n');
+  out.style.display = 'block';
+  textarea.select();
+}
+
+function clearAll() {
+  if (!confirm('Clear everything you typed here?')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  render();
+  document.getElementById('output').style.display = 'none';
+}
+
+render();
+</script>
+
+</body>
+</html>
